@@ -32,6 +32,7 @@ public class PessoaController
     public ResponseEntity<Pessoa> GetById(@PathVariable(value = "id") long id)
     {
         Optional<Pessoa> pessoa = _pessoaRepository.findById(id);
+
         if(pessoa.isPresent())
             return new ResponseEntity<Pessoa>(pessoa.get(), HttpStatus.OK);
         else
@@ -48,10 +49,15 @@ public class PessoaController
     public ResponseEntity<Pessoa> Put(@PathVariable(value = "id") long id, @Valid @RequestBody Pessoa newPessoa)
     {
         Optional<Pessoa> oldPessoa = _pessoaRepository.findById(id);
-        if(oldPessoa.isPresent()){
+        
+        if(oldPessoa.isPresent())
+        {
             Pessoa pessoa = oldPessoa.get();
+        
             pessoa.setNome(newPessoa.getNome());
+        
             _pessoaRepository.save(pessoa);
+        
             return new ResponseEntity<Pessoa>(pessoa, HttpStatus.OK);
         }
         else
@@ -62,7 +68,9 @@ public class PessoaController
     public ResponseEntity<Object> Delete(@PathVariable(value = "id") long id)
     {
         Optional<Pessoa> pessoa = _pessoaRepository.findById(id);
-        if(pessoa.isPresent()){
+        
+        if(pessoa.isPresent())
+        {
             _pessoaRepository.delete(pessoa.get());
             return new ResponseEntity<>(HttpStatus.OK);
         }
